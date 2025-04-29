@@ -1,0 +1,14 @@
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\bin\Debug\net8.0\PlatoonsWar.exe
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\bin\Debug\net8.0\PlatoonsWar.deps.json
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\bin\Debug\net8.0\PlatoonsWar.runtimeconfig.json
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\bin\Debug\net8.0\PlatoonsWar.dll
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\bin\Debug\net8.0\PlatoonsWar.pdb
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.GeneratedMSBuildEditorConfig.editorconfig
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.AssemblyInfoInputs.cache
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.AssemblyInfo.cs
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.csproj.CoreCompileInputs.cache
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.dll
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\refint\PlatoonsWar.dll
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.pdb
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.genruntimeconfig.cache
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\ref\PlatoonsWar.dll
