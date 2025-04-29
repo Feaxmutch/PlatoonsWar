@@ -12,3 +12,4 @@ F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\Platoo
 F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.pdb
 F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.genruntimeconfig.cache
 F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\ref\PlatoonsWar.dll
+F:\данил\Projects\visual_studio_projects\IJ_projects\OOP\PlatoonsWar\PlatoonsWar\obj\Debug\net8.0\PlatoonsWar.sourcelink.json

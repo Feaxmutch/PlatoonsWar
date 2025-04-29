@@ -8,8 +8,8 @@
             {
                 new Solider(100, 80, 50),
                 new Sniper(1.7f, 100, 50, 45),
-                new Stormtrooper(false, 5, 100, 40, 45),
-                new Stormtrooper(true, 4, 100, 35, 40),
+                new Stormtrooper(5, 100, 40, 45),
+                new Supporter(4, 100, 35, 40),
             };
 
             List<Solider> attackers = CloneSoliders(soliderReferences, 5);
@@ -94,7 +94,7 @@
 
         private void ShowPlatoonInfo(IPlatoon platoon)
         {
-            Console.WriteLine($"Имя взвода: { platoon.Name}");
+            Console.WriteLine($"Имя взвода: {platoon.Name}");
             Console.WriteLine("Здоровье солдат:");
 
             foreach (var solider in platoon.Soliders)
@@ -133,7 +133,7 @@
 
         public void ExecuteAttack()
         {
-            if (PlatoonsCanFight == false)  
+            if (PlatoonsCanFight == false)
             {
                 throw new InvalidOperationException("Attack or defend platoon is empty");
             }
@@ -177,7 +177,7 @@
             {
                 if (platoon.Soliders.Count > 0)
                 {
-                    solider.Attack(platoon);
+                    solider.Attack(new List<IDamageble>(platoon.Soliders));
                 }
             }
         }
@@ -226,10 +226,10 @@
 
         public bool IsDied => Health <= 0;
 
-        public virtual void Attack(Platoon platoon)
+        public virtual void Attack(List<IDamageble> enemys)
         {
-            int targetIndex = UserUtilits.GetRandomNumber(platoon.Soliders.Count);
-            IDamageble target = platoon.Soliders[targetIndex];
+            int targetIndex = UserUtilits.GetRandomNumber(enemys.Count);
+            IDamageble target = enemys[targetIndex];
             target.TakeDamage(Damage);
         }
 
@@ -260,10 +260,10 @@
             _damageMultiplyer = damageMultiplyer;
         }
 
-        public override void Attack(Platoon platoon)
+        public override void Attack(List<IDamageble> enemys)
         {
-            int targetIndex = UserUtilits.GetRandomNumber(platoon.Soliders.Count);
-            IDamageble target = platoon.Soliders[targetIndex];
+            int targetIndex = UserUtilits.GetRandomNumber(enemys.Count);
+            IDamageble target = enemys[targetIndex];
             target.TakeDamage((int)(Damage * _damageMultiplyer));
         }
 
@@ -272,43 +272,50 @@
 
     public class Stormtrooper : Solider
     {
-        private readonly bool _canDamageSame;
-        private readonly int _attacksCount;
-        private List<IDamageble> _damagedTargets;
-
-        public Stormtrooper(bool canDamageSame, int attacksCount, int health, int armor, int damage) : base(health, armor, damage)
+        public Stormtrooper(int attacksCount, int health, int armor, int damage) : base(health, armor, damage)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(attacksCount);
 
-            _canDamageSame = canDamageSame;
-            _attacksCount = attacksCount;
-            _damagedTargets = new();
+            AttacksCount = attacksCount;
         }
 
-        public override void Attack(Platoon platoon)
+        protected int AttacksCount { get; }
+
+        public override void Attack(List<IDamageble> enemys)
         {
-            var enemys = platoon.Soliders;
-
-            for (int i = 0; i < _attacksCount && enemys.Count > 0; i++)
+            for (int i = 0; i < AttacksCount && enemys.Count > 0; i++)
             {
-                if (_canDamageSame)
-                {
-                    enemys = platoon.Soliders;
-                }
-                else
-                {
-                    enemys = platoon.Soliders.Where(solider => _damagedTargets.Contains(solider) == false).ToList();
-                }
-
-                if (enemys.Count > 0)
-                {
-                    int targetIndex = UserUtilits.GetRandomNumber(enemys.Count);
-                    IDamageble target = enemys[targetIndex];
-                    target.TakeDamage(Damage);
-                }
+                int targetIndex = UserUtilits.GetRandomNumber(enemys.Count);
+                IDamageble target = enemys[targetIndex];
+                target.TakeDamage(Damage);
             }
         }
 
-        public override Solider Clone() => new Stormtrooper(_canDamageSame, _attacksCount, Health, Armor, Damage);
+        public override Solider Clone() => new Stormtrooper(AttacksCount, Health, Armor, Damage);
+    }
+
+    public class Supporter : Stormtrooper
+    {
+        private List<IDamageble> _damagedEnemys;
+
+        public Supporter(int attacksCount, int health, int armor, int damage) : base(attacksCount, health, armor, damage) 
+        {
+            _damagedEnemys = new();
+        }
+
+        public override void Attack(List<IDamageble> enemys)
+        {
+            List<IDamageble> filteredEnemys = enemys;
+
+            for (int i = 0; i < AttacksCount && filteredEnemys.Count > 0; i++)
+            {
+                filteredEnemys = enemys.Where(enemy => _damagedEnemys.Contains(enemy) == false).ToList();
+                int targetIndex = UserUtilits.GetRandomNumber(filteredEnemys.Count);
+                IDamageble target = filteredEnemys[targetIndex];
+                target.TakeDamage(Damage);
+            }
+        }
+
+        public override Solider Clone() => new Supporter(AttacksCount, Health, Armor, Damage);
     }
 }
