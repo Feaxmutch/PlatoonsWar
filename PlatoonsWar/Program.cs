@@ -6,14 +6,15 @@
         {
             List<Solider> soliderReferences = new()
             {
-                new Solider(100, 80, 50),
-                new Sniper(1.7f, 100, 50, 45),
+                new Solider(100, 60, 50),
+                new Sniper(1.6f, 100, 45, 45),
                 new Stormtrooper(5, 100, 40, 45),
-                new Supporter(4, 100, 35, 40),
+                new Supporter(5, 100, 35, 40),
             };
 
-            List<Solider> attackers = CloneSoliders(soliderReferences, 5);
-            List<Solider> defenders = CloneSoliders(soliderReferences, 6);
+            SoldiersClonner soldiersClonner = new();
+            List<Solider> attackers = soldiersClonner.CloneSoliders(soliderReferences, 5);
+            List<Solider> defenders = soldiersClonner.CloneSoliders(soliderReferences, 6);
 
             Platoon attackerPlatoon = new(attackers, "Зайчики");
             Platoon defenderPlatoon = new(defenders, "Пантеры");
@@ -23,24 +24,6 @@
 
             menu.ExecuteFight();
             Console.ReadKey();
-        }
-
-        static List<Solider> CloneSoliders(List<Solider> references, int clonesCount)
-        {
-            ArgumentNullException.ThrowIfNull(references);
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(clonesCount);
-
-            List<Solider> clonedSoliders = new();
-
-            foreach (var solider in references)
-            {
-                for (int i = 0; i < clonesCount; i++)
-                {
-                    clonedSoliders.Add(solider.Clone());
-                }
-            }
-
-            return clonedSoliders;
         }
     }
 
@@ -60,6 +43,27 @@
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxValue);
 
             return s_random.Next(maxValue);
+        }
+    }
+
+    public class SoldiersClonner
+    {
+        public List<Solider> CloneSoliders(List<Solider> references, int clonesCount)
+        {
+            ArgumentNullException.ThrowIfNull(references);
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(clonesCount);
+
+            List<Solider> clonedSoliders = new();
+
+            foreach (var solider in references)
+            {
+                for (int i = 0; i < clonesCount; i++)
+                {
+                    clonedSoliders.Add(solider.Clone());
+                }
+            }
+
+            return clonedSoliders;
         }
     }
 
@@ -129,7 +133,7 @@
         public IPlatoon Attacker => _attacker;
         public IPlatoon Defender => _defender;
 
-        public bool PlatoonsCanFight => _attacker.Soliders.Count > 0 && _defender.Soliders.Count > 0;
+        public bool PlatoonsCanFight => _attacker.HaveSoliders && _defender.HaveSoliders;
 
         public void ExecuteAttack()
         {
@@ -138,7 +142,7 @@
                 throw new InvalidOperationException("Attack or defend platoon is empty");
             }
 
-            _attacker.Attack(_defender);
+            _attacker.Attack(new List<IDamageble>(_defender.Soliders));
         }
 
         public void SwitchPlatoons()
@@ -171,13 +175,15 @@
 
         public IReadOnlyList<IDamageble> Soliders => _soliders;
 
-        public void Attack(Platoon platoon)
+        public bool HaveSoliders => Soliders.Count > 0;
+
+        public void Attack(List<IDamageble> enemys)
         {
             foreach (var solider in _soliders)
             {
-                if (platoon.Soliders.Count > 0)
+                if (enemys.Count > 0)
                 {
-                    solider.Attack(new List<IDamageble>(platoon.Soliders));
+                    solider.Attack(new List<IDamageble>(enemys));
                 }
             }
         }
@@ -283,7 +289,9 @@
 
         public override void Attack(List<IDamageble> enemys)
         {
-            for (int i = 0; i < AttacksCount && enemys.Count > 0; i++)
+            int attacksCount = Math.Min(AttacksCount, enemys.Count);
+
+            for (int i = 0; i < attacksCount; i++)
             {
                 int targetIndex = UserUtilits.GetRandomNumber(enemys.Count);
                 IDamageble target = enemys[targetIndex];
@@ -296,23 +304,21 @@
 
     public class Supporter : Stormtrooper
     {
-        private List<IDamageble> _damagedEnemys;
-
-        public Supporter(int attacksCount, int health, int armor, int damage) : base(attacksCount, health, armor, damage) 
+        public Supporter(int attacksCount, int health, int armor, int damage) : base(attacksCount, health, armor, damage)
         {
-            _damagedEnemys = new();
+
         }
 
         public override void Attack(List<IDamageble> enemys)
         {
-            List<IDamageble> filteredEnemys = enemys;
+            int attacksCount = Math.Min(AttacksCount, enemys.Count);
 
-            for (int i = 0; i < AttacksCount && filteredEnemys.Count > 0; i++)
+            for (int i = 0; i < attacksCount; i++)
             {
-                filteredEnemys = enemys.Where(enemy => _damagedEnemys.Contains(enemy) == false).ToList();
-                int targetIndex = UserUtilits.GetRandomNumber(filteredEnemys.Count);
-                IDamageble target = filteredEnemys[targetIndex];
+                int targetIndex = UserUtilits.GetRandomNumber(enemys.Count);
+                IDamageble target = enemys[targetIndex];
                 target.TakeDamage(Damage);
+                enemys.Remove(target);
             }
         }
 

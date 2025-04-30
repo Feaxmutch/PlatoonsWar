@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PlatoonsWar")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3df6949ce41d42422f886b3fb3dc8825ade4cb15")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+020cea2302a7a6a5f9d3288538b04c99f4b99c26")]
 [assembly: System.Reflection.AssemblyProductAttribute("PlatoonsWar")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PlatoonsWar")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
